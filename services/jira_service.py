@@ -27,6 +27,7 @@ from models.ticket import Ticket
 from utils.adf_parser import ADFParser
 from utils.logger import logger
 from utils.exceptions import JiraConnectionError
+from config.settings import Settings
 
 
 class JiraService:
@@ -218,7 +219,7 @@ class JiraService:
     def download_attachments(
         self,
         ticket: Ticket,
-        download_dir: str = "downloads"
+        download_dir: str = Settings.DOWNLOAD_FOLDER
     ) -> List[Path]:
         """
         Download all image attachments for a ticket.

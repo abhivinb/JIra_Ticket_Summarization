@@ -17,7 +17,7 @@ from clients.openai_client import OpenAIClient
 from config.prompts import Prompts
 from config.settings import Settings
 from models.ticket import Ticket
-from models.vision_result import VisionResult
+from models.vision_results import VisionResult
 from utils.exceptions import VisionAnalysisError
 from utils.logger import logger
 from utils.helper import clean_json
@@ -45,7 +45,11 @@ class VisionService:
     @staticmethod
     def _build_prompt(ticket: Ticket) -> str:
 
-        comments = "\n".join(ticket.comments)
+        comments = (
+                    "\n".join(ticket.comments)
+                    if ticket.comments
+                    else "No comments available."
+                )
 
         return Prompts.VISION_PROMPT.format(
             description=ticket.description,

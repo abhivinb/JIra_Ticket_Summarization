@@ -15,7 +15,7 @@ from config.prompts import Prompts
 from config.settings import Settings
 from models.summary import Summary
 from models.ticket import Ticket
-from models.vision_result import VisionResult
+from models.vision_results import VisionResult
 from utils.exceptions import SummaryGenerationError
 from utils.logger import logger
 
@@ -74,7 +74,11 @@ class SummaryService:
         vision: VisionResult
     ) -> str:
 
-        comments = "\n".join(ticket.comments)
+        comments = (
+            "\n".join(ticket.comments)
+            if ticket.comments
+            else "No comments available."
+        )
 
         observations = "\n".join(
             vision.observations
@@ -90,7 +94,11 @@ class SummaryService:
 
         return Prompts.SUMMARY_PROMPT.format(
 
-            description=ticket.description,
+            description = (
+                ticket.description
+                if ticket.description
+                else "No description provided."
+            )
 
             comments=comments,
 

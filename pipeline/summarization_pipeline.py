@@ -9,6 +9,7 @@ from services.jira_service import JiraService
 from services.vision_service import VisionService
 from services.summary_service import SummaryService
 from utils.logger import logger
+from models.vision_results import VisionResult
 
 
 class SummarizationPipeline:
@@ -55,13 +56,25 @@ class SummarizationPipeline:
             len(images)
         )
 
-        vision_result = self.vision.analyze(
+        if images:
 
-            ticket=ticket,
+            vision_result = self.vision.analyze(
 
-            image_paths=images
+                ticket=ticket,
 
-        )
+                image_paths=images
+
+            )
+
+        else:
+            vision_result = VisionResult(
+            
+                    observations=[],
+                    errors=[],
+                    graph_findings=[],
+                    ocr_text=""
+            
+            )
 
         logger.info(
             "Vision analysis completed."
@@ -83,13 +96,14 @@ class SummarizationPipeline:
             summary
         )
 
-        self.jira.add_comment(
+        if post_to_jira:
+            self.jira.add_comment(
 
-            issue_key=ticket.ticket_id,
+                issue_key=ticket.ticket_id,
 
-            comment=comment
+                comment=comment
 
-        )
+            )
 
         logger.info(
             "Comment posted."

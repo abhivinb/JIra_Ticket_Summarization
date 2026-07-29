@@ -107,7 +107,7 @@ def main():
 
         finally:
 
-            if pipeline:
+            if pipeline is not None:
 
                 pipeline.shutdown()
 
