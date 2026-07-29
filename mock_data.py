@@ -3,7 +3,7 @@ from models.ticket import Ticket
 
 def get_dummy_ticket() -> Ticket:
     return Ticket(
-        key="ADAS-1423",
+        ticket_id="ADAS-1423",
         summary="Lane Keeping Assist drifts to the left",
         description="""
 Vehicle continuously drifts towards the left after driving
@@ -33,6 +33,8 @@ Environment:
         ],
         attachments=[
             "sample_images/lka_dashboard.png",
-            "sample_images/lka_camera_view.png"
+            "sample_images/lka_camera_view.png",
+            "sample_images/graphic.png"
+
         ]
     )

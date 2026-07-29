@@ -10,6 +10,7 @@ from services.vision_service import VisionService
 from services.summary_service import SummaryService
 from utils.logger import logger
 from models.vision_results import VisionResult
+from mock_data import get_dummy_ticket
 
 
 class SummarizationPipeline:
@@ -39,17 +40,23 @@ class SummarizationPipeline:
             ticket_id
         )
 
-        ticket = self.jira.get_issue(
-            ticket_id
-        )
+        ticket = get_dummy_ticket()  #dummy data
+
+        #actual data
+        # ticket = self.jira.get_issue(
+        #     ticket_id
+        # )
 
         logger.info(
             "Ticket fetched successfully."
         )
 
-        images = self.jira.download_attachments(
-            ticket
-        )
+        images = ticket.attachments #dummy data
+
+        #actual data
+        # images = self.jira.download_attachments(   
+        #     ticket
+        # )
 
         logger.info(
             "%d images downloaded.",
@@ -96,14 +103,14 @@ class SummarizationPipeline:
             summary
         )
 
-        if post_to_jira:
-            self.jira.add_comment(
+        # if post_to_jira:
+        #     self.jira.add_comment(
 
-                issue_key=ticket.ticket_id,
+        #         issue_key=ticket.ticket_id,
 
-                comment=comment
+        #         comment=comment
 
-            )
+        #     )
 
         logger.info(
             "Comment posted."
