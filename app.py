@@ -42,7 +42,7 @@ def main():
 
         "Post summary back to Jira",
 
-        value=True
+        value=False
 
     )
 
