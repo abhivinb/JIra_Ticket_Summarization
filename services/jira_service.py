@@ -10,11 +10,10 @@ Responsible for:
 - Collect Attachments
 - Download Attachments
 """
-import mimetypes
-import shutil
 
 from __future__ import annotations
-
+import mimetypes
+import shutil
 from pathlib import Path
 from typing import List, Optional
 

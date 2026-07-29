@@ -98,7 +98,7 @@ class SummaryService:
                 ticket.description
                 if ticket.description
                 else "No description provided."
-            )
+            ),
 
             comments=comments,
 
@@ -151,3 +151,5 @@ class SummaryService:
             raise SummaryGenerationError(
                 "Invalid JSON received."
             ) from ex
+
+        
