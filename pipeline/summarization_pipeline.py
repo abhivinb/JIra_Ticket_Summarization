@@ -27,8 +27,7 @@ class SummarizationPipeline:
 
     def run(
         self,
-        ticket_id: str,
-        post_to_jira: bool = True
+        ticket_id: str
     ) -> Summary:
 
         logger.info(
@@ -40,9 +39,9 @@ class SummarizationPipeline:
             ticket_id
         )
 
-        ticket = get_dummy_ticket()  #dummy data
+        ticket = get_dummy_ticket()  # dummy data
 
-        #actual data
+        # actual data
         # ticket = self.jira.get_issue(
         #     ticket_id
         # )
@@ -51,10 +50,10 @@ class SummarizationPipeline:
             "Ticket fetched successfully."
         )
 
-        images = ticket.attachments #dummy data
+        images = ticket.attachments  # dummy data
 
-        #actual data
-        # images = self.jira.download_attachments(   
+        # actual data
+        # images = self.jira.download_attachments(
         #     ticket
         # )
 
@@ -75,12 +74,12 @@ class SummarizationPipeline:
 
         else:
             vision_result = VisionResult(
-            
-                    observations=[],
-                    errors=[],
-                    graph_findings=[],
-                    ocr_text=""
-            
+
+                observations=[],
+                errors=[],
+                graph_findings=[],
+                ocr_text=""
+
             )
 
         logger.info(
@@ -99,54 +98,12 @@ class SummarizationPipeline:
             "Summary generated."
         )
 
-        comment = self._build_comment(
-            summary
-        )
-
-        # if post_to_jira:
-        #     self.jira.add_comment(
-
-        #         issue_key=ticket.ticket_id,
-
-        #         comment=comment
-
-        #     )
-
-        logger.info(
-            "Comment posted."
-        )
-
         logger.info(
             "Pipeline Finished."
         )
 
-        return summary    
+        return summary
 
-        # --------------------------------------------------
-
-    @staticmethod
-    def _build_comment(
-        summary: Summary
-    ) -> str:
-
-        return f"""
-        🤖 AI Generated Summary
-
-        Executive Summary
-        ------------------------
-
-        {summary.executive_summary}
-
-        Key Findings
-        ------------------------
-
-        {summary.key_findings}
-
-        Recommendations
-        ------------------------
-
-        {summary.recommendations}
-        """
         # --------------------------------------------------
 
     def shutdown(self):

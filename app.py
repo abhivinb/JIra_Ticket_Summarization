@@ -38,14 +38,6 @@ def main():
 
     )
 
-    post_to_jira = st.checkbox(
-
-        "Post summary back to Jira",
-
-        value=False
-
-    )
-
     if st.button("Generate Summary"):
 
         if not ticket_id.strip():
@@ -67,8 +59,7 @@ def main():
             ):
 
                 summary = pipeline.run(
-                    ticket_id=ticket_id,
-                    post_to_jira=post_to_jira
+                    ticket_id=ticket_id
                 )
 
             st.success(
