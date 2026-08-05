@@ -82,14 +82,6 @@ def main():
                 summary.key_findings
             )
 
-            st.subheader(
-                "Recommendations"
-            )
-
-            st.write(
-                summary.recommendations
-            )
-
         except Exception as ex:
 
             logger.exception(ex)

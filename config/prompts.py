@@ -76,8 +76,7 @@ Generate a JSON response only.
 
 {{
     "executive_summary": "...",
-    "key_findings": "...",
-    "recommendations": "..."
+    "key_findings": "..."
 }}
 
 Do not return markdown.

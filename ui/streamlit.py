@@ -83,12 +83,4 @@ if generate:
         summary.key_findings
     )
 
-    st.subheader(
-        "Recommendations"
-    )
-
-    st.write(
-        summary.recommendations
-    )
-
     pipeline.shutdown()
