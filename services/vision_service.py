@@ -34,6 +34,8 @@ class VisionService:
     @staticmethod
     def _encode_image(image_path: Path) -> str:
 
+        image_path = Path(image_path)
+        
         with image_path.open("rb") as image:
 
             return base64.b64encode(

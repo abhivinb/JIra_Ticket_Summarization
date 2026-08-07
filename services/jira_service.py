@@ -15,7 +15,7 @@ from __future__ import annotations
 import mimetypes
 import shutil
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -26,7 +26,6 @@ from models.ticket import Ticket
 from utils.adf_parser import ADFParser
 from utils.logger import logger
 from utils.exceptions import JiraConnectionError
-from config.settings import Settings
 
 
 class JiraService:
@@ -60,8 +59,7 @@ class JiraService:
                 504
             ],
             allowed_methods=[
-                "GET",
-                "POST"
+                "GET"
             ]
         )
 
@@ -300,57 +298,6 @@ class JiraService:
                 logger.exception(ex)
 
         return downloaded_files
-
-    # --------------------------------------------------
-
-    def add_comment(
-        self,
-        issue_key: str,
-        comment: str
-    ) -> None:
-        """
-        Add generated summary back to Jira.
-        """
-
-        endpoint = (
-            f"{self.base_url}/rest/api/3/issue/"
-            f"{issue_key}/comment"
-        )
-
-        payload = {
-            "body": {
-                "type": "doc",
-                "version": 1,
-                "content": [
-                    {
-                        "type": "paragraph",
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": comment
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
-
-        response = self.session.post(
-            endpoint,
-            json=payload,
-            timeout=30
-        )
-
-        if response.status_code not in (200, 201):
-
-            raise JiraConnectionError(
-                "Unable to add Jira comment."
-            )
-
-        logger.info(
-            "Summary added to Jira ticket %s",
-            issue_key
-        )
 
     # --------------------------------------------------
 

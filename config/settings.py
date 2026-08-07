@@ -16,6 +16,25 @@ load_dotenv()
 class Settings:
 
     # -----------------------------
+    # Application
+    # -----------------------------
+
+    ENVIRONMENT = os.getenv(
+        "ENVIRONMENT",
+        "local"
+    )
+
+    USE_MOCK_DATA = os.getenv(
+        "USE_MOCK_DATA",
+        "False"
+    ).strip().lower() in (
+        "1",
+        "true",
+        "yes",
+        "on"
+    )
+
+    # -----------------------------
     # OpenAI
     # -----------------------------
 
@@ -66,13 +85,13 @@ class Settings:
         if not cls.OPENAI_API_KEY:
             missing.append("OPENAI_API_KEY")
 
-        if not cls.JIRA_BASE_URL:
+        if not cls.USE_MOCK_DATA and not cls.JIRA_BASE_URL:
             missing.append("JIRA_BASE_URL")
 
-        if not cls.JIRA_EMAIL:
+        if not cls.USE_MOCK_DATA and not cls.JIRA_EMAIL:
             missing.append("JIRA_EMAIL")
 
-        if not cls.JIRA_API_TOKEN:
+        if not cls.USE_MOCK_DATA and not cls.JIRA_API_TOKEN:
             missing.append("JIRA_API_TOKEN")
 
         if missing:
@@ -84,4 +103,3 @@ class Settings:
                 + "\n".join(missing)
 
             )
-        

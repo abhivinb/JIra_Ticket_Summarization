@@ -5,11 +5,13 @@ Main orchestration pipeline.
 """
 
 from models.summary import Summary
+from config.settings import Settings
 from services.jira_service import JiraService
 from services.vision_service import VisionService
 from services.summary_service import SummaryService
 from utils.logger import logger
 from models.vision_results import VisionResult
+from mock_data import get_dummy_ticket
 
 
 class SummarizationPipeline:
@@ -26,8 +28,7 @@ class SummarizationPipeline:
 
     def run(
         self,
-        ticket_id: str,
-        post_to_jira: bool = True
+        ticket_id: str
     ) -> Summary:
 
         logger.info(
@@ -39,17 +40,29 @@ class SummarizationPipeline:
             ticket_id
         )
 
-        ticket = self.jira.get_issue(
-            ticket_id
-        )
+        if Settings.USE_MOCK_DATA:
+
+            ticket = get_dummy_ticket()
+
+        else:
+
+            ticket = self.jira.get_issue(
+                ticket_id
+            )
 
         logger.info(
             "Ticket fetched successfully."
         )
 
-        images = self.jira.download_attachments(
-            ticket
-        )
+        if Settings.USE_MOCK_DATA:
+
+            images = ticket.attachments
+
+        else:
+
+            images = self.jira.download_attachments(
+                ticket
+            )
 
         logger.info(
             "%d images downloaded.",
@@ -68,12 +81,12 @@ class SummarizationPipeline:
 
         else:
             vision_result = VisionResult(
-            
-                    observations=[],
-                    errors=[],
-                    graph_findings=[],
-                    ocr_text=""
-            
+
+                observations=[],
+                errors=[],
+                graph_findings=[],
+                ocr_text=""
+
             )
 
         logger.info(
@@ -92,54 +105,12 @@ class SummarizationPipeline:
             "Summary generated."
         )
 
-        comment = self._build_comment(
-            summary
-        )
-
-        if post_to_jira:
-            self.jira.add_comment(
-
-                issue_key=ticket.ticket_id,
-
-                comment=comment
-
-            )
-
-        logger.info(
-            "Comment posted."
-        )
-
         logger.info(
             "Pipeline Finished."
         )
 
-        return summary    
+        return summary
 
-        # --------------------------------------------------
-
-    @staticmethod
-    def _build_comment(
-        summary: Summary
-    ) -> str:
-
-        return f"""
-        🤖 AI Generated Summary
-
-        Executive Summary
-        ------------------------
-
-        {summary.executive_summary}
-
-        Key Findings
-        ------------------------
-
-        {summary.key_findings}
-
-        Recommendations
-        ------------------------
-
-        {summary.recommendations}
-        """
         # --------------------------------------------------
 
     def shutdown(self):

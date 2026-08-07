@@ -135,11 +135,6 @@ class SummaryService:
                 key_findings=data.get(
                     "key_findings",
                     ""
-                ),
-
-                recommendations=data.get(
-                    "recommendations",
-                    ""
                 )
 
             )

@@ -1,0 +1,13 @@
+.git
+.gitignore
+.env
+.venv
+**pycache**
+logs
+downloads
+output
+.vscode
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.env.example

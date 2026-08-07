@@ -6,10 +6,38 @@ Run using:
 streamlit run app.py
 """
 
+import sys
+
 import streamlit as st
 
+from config.settings import Settings
 from pipeline.summarization_pipeline import SummarizationPipeline
 from utils.logger import logger
+
+
+def log_startup():
+
+    logger.info("Application Started")
+
+    logger.info(
+        "Python Version: %s",
+        sys.version.split()[0]
+    )
+
+    logger.info(
+        "Environment: %s",
+        Settings.ENVIRONMENT
+    )
+
+    logger.info(
+        "Mock Mode: %s",
+        Settings.USE_MOCK_DATA
+    )
+
+    logger.info(
+        "OpenAI Model: %s",
+        Settings.OPENAI_MODEL
+    )
 
 
 def main():
@@ -30,19 +58,32 @@ def main():
         "Generate AI-powered summaries for Jira tickets."
     )
 
+    try:
+
+        Settings.validate()
+
+        log_startup()
+
+    except ValueError as ex:
+
+        logger.error(
+            "Application startup validation failed: %s",
+            ex
+        )
+
+        st.error(
+            "Application configuration is incomplete. Please check the required environment variables."
+        )
+
+        st.info(str(ex))
+
+        return
+
     ticket_id = st.text_input(
 
         "Enter Jira Ticket ID",
 
         placeholder="ABC-123"
-
-    )
-
-    post_to_jira = st.checkbox(
-
-        "Post summary back to Jira",
-
-        value=True
 
     )
 
@@ -67,8 +108,7 @@ def main():
             ):
 
                 summary = pipeline.run(
-                    ticket_id=ticket_id,
-                    post_to_jira=post_to_jira
+                    ticket_id=ticket_id
                 )
 
             st.success(
@@ -89,14 +129,6 @@ def main():
 
             st.write(
                 summary.key_findings
-            )
-
-            st.subheader(
-                "Recommendations"
-            )
-
-            st.write(
-                summary.recommendations
             )
 
         except Exception as ex:

@@ -1,7 +1,7 @@
 class Prompts:
 
     VISION_PROMPT = """
-You are an experienced Software Support Engineer.
+You are an experienced Software Support ADAS Engineer.
 
 Analyse the Jira ticket.
 
@@ -33,18 +33,18 @@ Tasks
 
 Return JSON.
 
-{
+{{
  "observations":[],
  "errors":[],
  "graph_findings":[],
  "ocr_text":""
-}
+}}
 
 Return ONLY JSON.
 """
 
     SUMMARY_PROMPT = """
-You are an experienced Software Support Engineer.
+You are an experienced Software Support ADAS Engineer.
 
 You are provided with:
 
@@ -74,11 +74,10 @@ OCR Text
 
 Generate a JSON response only.
 
-{
+{{
     "executive_summary": "...",
-    "key_findings": "...",
-    "recommendations": "..."
-}
+    "key_findings": "..."
+}}
 
 Do not return markdown.
 
