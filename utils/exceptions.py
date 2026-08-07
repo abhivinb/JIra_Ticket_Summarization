@@ -8,7 +8,3 @@ class VisionAnalysisError(Exception):
 
 class SummaryGenerationError(Exception):
     pass
-
-
-class CommentPostingError(Exception):
-    pass

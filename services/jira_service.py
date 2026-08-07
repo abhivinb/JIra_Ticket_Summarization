@@ -15,7 +15,7 @@ from __future__ import annotations
 import mimetypes
 import shutil
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -26,7 +26,6 @@ from models.ticket import Ticket
 from utils.adf_parser import ADFParser
 from utils.logger import logger
 from utils.exceptions import JiraConnectionError
-from config.settings import Settings
 
 
 class JiraService:

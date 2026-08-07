@@ -5,6 +5,7 @@ Main orchestration pipeline.
 """
 
 from models.summary import Summary
+from config.settings import Settings
 from services.jira_service import JiraService
 from services.vision_service import VisionService
 from services.summary_service import SummaryService
@@ -39,23 +40,29 @@ class SummarizationPipeline:
             ticket_id
         )
 
-        ticket = get_dummy_ticket()  # dummy data
+        if Settings.USE_MOCK_DATA:
 
-        # actual data
-        # ticket = self.jira.get_issue(
-        #     ticket_id
-        # )
+            ticket = get_dummy_ticket()
+
+        else:
+
+            ticket = self.jira.get_issue(
+                ticket_id
+            )
 
         logger.info(
             "Ticket fetched successfully."
         )
 
-        images = ticket.attachments  # dummy data
+        if Settings.USE_MOCK_DATA:
 
-        # actual data
-        # images = self.jira.download_attachments(
-        #     ticket
-        # )
+            images = ticket.attachments
+
+        else:
+
+            images = self.jira.download_attachments(
+                ticket
+            )
 
         logger.info(
             "%d images downloaded.",
